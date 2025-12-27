@@ -24,6 +24,7 @@ class ApiPrefix(BaseModel):
 
 class DatabaseConfig(BaseModel):
     url: str
+    admin_url: str
     echo: bool = False
     echo_pool: bool = False
     pool_size: int = 50

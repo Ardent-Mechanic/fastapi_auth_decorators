@@ -1,7 +1,7 @@
 import asyncio
 from logging.config import fileConfig
 
-from sqlalchemy import pool
+from sqlalchemy import create_engine, pool, text
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
 
@@ -30,6 +30,25 @@ target_metadata = Base.metadata
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
 config.set_main_option("sqlalchemy.url", str(settings.db.url))
+
+def ensure_database_exists():
+    engine = create_engine(
+        settings.db.admin_url,
+        isolation_level="AUTOCOMMIT"
+    )
+
+    db_name = settings.db.url.rsplit('/', maxsplit=1)[-1]
+
+    with engine.connect() as conn:
+        exists = conn.execute(
+            text("SELECT 1 FROM pg_database WHERE datname = :name"),
+            {"name": db_name},
+        ).scalar()
+
+        if not exists:
+            conn.execute(
+                text(f'CREATE DATABASE "{db_name}"')
+            )
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.
@@ -82,7 +101,7 @@ async def run_async_migrations() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
-
+    ensure_database_exists()
     asyncio.run(run_async_migrations())
 
 
