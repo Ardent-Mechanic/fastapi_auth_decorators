@@ -12,6 +12,8 @@ asyncpg = "==0.30.0"
 alembic = "==1.14.0"
 passlib = "*"
 psycopg2 = "*"
+sniffio = "*"
+pydantic = {extras = ["email"], version = "*"}
 
 [dev-packages]
 black = "==24.10.0"

@@ -4,6 +4,7 @@ import uvicorn
 from fastapi import FastAPI
 
 from core.config import settings
+from core.logging import setup_logging
 from db import db_session
 from model import Base
 from api import router as api_router
@@ -11,6 +12,7 @@ from api import router as api_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    setup_logging()
     async with db_session.engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
     try:

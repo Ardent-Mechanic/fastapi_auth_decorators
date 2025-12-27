@@ -1,3 +1,4 @@
+import logging
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import (
     create_async_engine,
@@ -7,9 +8,9 @@ from sqlalchemy.ext.asyncio import (
 )
 from core.config import settings
 
-import logging.config
+# import logging.config
 
-logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
+# logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
 
 logger_db = logging.getLogger("db")
 

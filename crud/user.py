@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+import logging
 from typing import Sequence
 
 from sqlalchemy import select
@@ -8,9 +9,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from model.user import User
 from utils import convert_to_date
 
-import logging.config
+# import logging.config
 
-logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
+# logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
 
 logger_db = logging.getLogger("db")
 logger_main = logging.getLogger("main")
