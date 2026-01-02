@@ -14,6 +14,7 @@ passlib = "*"
 psycopg2 = "*"
 sniffio = "*"
 pydantic = {extras = ["email"], version = "*"}
+argon2-cffi = "*"
 
 [dev-packages]
 black = "==24.10.0"
