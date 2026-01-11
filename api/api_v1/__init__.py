@@ -11,4 +11,3 @@ router.include_router(
     user_router,
     prefix=settings.api.v1.user,
 )
-

@@ -1,5 +1,8 @@
 /venv/
+.venv
 .idea/
 __pycache__/
 .env
 /logs
+core/services
+.mypy_cache

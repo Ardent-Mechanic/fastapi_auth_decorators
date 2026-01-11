@@ -3,11 +3,11 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
+from api import router as api_router
 from core.config import settings
 from core.logging import setup_logging
 from db import db_session
 from model import Base
-from api import router as api_router
 
 
 @asynccontextmanager
@@ -28,9 +28,4 @@ app = FastAPI(
 app.include_router(api_router)
 
 if __name__ == "__main__":
-    uvicorn.run(
-        app,
-        host=settings.run.host,
-        port=settings.run.port,
-        reload=True
-    )
+    uvicorn.run(app, host=settings.run.host, port=settings.run.port, reload=True)

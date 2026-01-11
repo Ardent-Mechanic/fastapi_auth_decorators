@@ -1,8 +1,10 @@
 from pathlib import Path
-from typing import Optional
 
-from pydantic import SecretStr, BaseModel, field_validator
+from pydantic import BaseModel, SecretStr, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# from typing import Optional
+
 
 BASE_DIR = Path(__file__).parent.parent
 
@@ -35,10 +37,10 @@ class DatabaseConfig(BaseModel):
         "uq": "uq_%(table_name)s_%(column_0_name)s",
         "ck": "ck_%(table_name)s_%(constraint_name)s",
         "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-        "pk": "pk_%(table_name)s"
+        "pk": "pk_%(table_name)s",
     }
 
-    @field_validator('url')
+    @field_validator("url")
     def validate_url(cls, v):
         if not v.startswith("postgresql+asyncpg://"):
             raise ValueError("URL должен начинаться с 'postgresql+asyncpg://'")
@@ -57,4 +59,4 @@ class Settings(BaseSettings):
     db: DatabaseConfig
 
 
-settings = Settings() # type: ignore
+settings = Settings()  # type: ignore

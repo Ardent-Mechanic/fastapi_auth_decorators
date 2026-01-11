@@ -12,4 +12,6 @@ def convert_to_date(date_str: str, format: str = "%Y-%m-%d %H:%M:%S") -> datetim
     try:
         return datetime.strptime(date_str, format)
     except ValueError:
-        raise ValueError(f"Неверный формат даты и времени: '{date_str}'. Ожидался формат '{format}'.")
+        raise ValueError(
+            f"Неверный формат даты и времени: '{date_str}'. Ожидался формат '{format}'."
+        )

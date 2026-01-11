@@ -1,5 +1,6 @@
 from datetime import datetime
 from typing import Optional
+
 from pydantic import BaseModel, EmailStr, Field
 
 
@@ -8,17 +9,20 @@ class UserBase(BaseModel):
     is_active: bool = True
     is_superuser: bool = False
 
+
 class AddUserData(UserBase):
     password: str = Field(min_length=8, max_length=128)
+
     class Config:
         json_schema_extra = {
             "example": {
                 "email": "user@example.com",
                 "password": "strongpassword",
                 "is_active": True,
-                "is_superuser": False
+                "is_superuser": False,
             }
         }
+
 
 class UpdateUserData(BaseModel):
     user_id: int
@@ -28,7 +32,8 @@ class UpdateUserData(BaseModel):
     is_superuser: Optional[bool] = None
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
+
 
 class GetUserData(BaseModel):
     user_id: int
@@ -38,7 +43,8 @@ class GetUserData(BaseModel):
     created_at: datetime
 
     class Config:
-        from_attributes = True 
+        from_attributes = True
+
 
 class DeleteUserData(BaseModel):
     user_id: int

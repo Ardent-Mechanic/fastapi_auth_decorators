@@ -1,5 +1,3 @@
-__all__ = (
-    "Auth",
-)
+__all__ = ("Auth",)
 
 from decorators.auth import Auth

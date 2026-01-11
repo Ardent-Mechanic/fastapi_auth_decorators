@@ -1,23 +1,12 @@
 from typing import Annotated
 
-from fastapi import (
-    APIRouter,
-    Body,
-    Depends,
-    HTTPException,
-)
+from fastapi import APIRouter, Body, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.exceptions import UserDBError
-from crud.user import (
-    add_user_db,
-    delete_user_db,
-    get_user_by_id_db,
-    update_user_db,
-)
+from crud.user import add_user_db, delete_user_db, get_user_by_id_db, update_user_db
 from db import db_session
-
-from schemas import GetUserData, AddUserData, UpdateUserData
+from schemas import AddUserData, GetUserData, UpdateUserData
 from schemas.user import DeleteUserData, UpdateUserData
 
 router = APIRouter(tags=["User"])
@@ -37,7 +26,7 @@ async def get_user_by_id(
             raise HTTPException(status_code=404, detail="User not found")
         return user
     except UserDBError as e:
-        raise HTTPException(status_code=500, detail="Database error")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 
 @router.post("/add_user", response_model=GetUserData, summary="")
@@ -51,7 +40,7 @@ async def add_user(
     try:
         return await add_user_db(session=session, user_new=user_new)
     except UserDBError as e:
-        raise HTTPException(status_code=500, detail="Database error")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
 
 
 @router.put("/update_user", response_model=UpdateUserData, summary="")
@@ -68,8 +57,9 @@ async def update_user(
             raise HTTPException(status_code=404, detail="User not found")
         return user
     except UserDBError as e:
-        raise HTTPException(status_code=500, detail="Database error")
-    
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")
+
+
 @router.delete("/{user_id}", response_model=DeleteUserData, summary="")
 async def delete_user(
     session: Annotated[
@@ -85,4 +75,4 @@ async def delete_user(
         else:
             return user
     except UserDBError as e:
-        raise HTTPException(status_code=500, detail="Database error")
+        raise HTTPException(status_code=500, detail=f"Database error: {e}")

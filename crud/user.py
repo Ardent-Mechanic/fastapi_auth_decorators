@@ -1,16 +1,14 @@
-import json
-from datetime import datetime
 import logging
-from typing import Sequence
 
-from sqlalchemy import and_, select
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.exceptions import UserDBError
 from model.user import User
 from schemas.user import AddUserData, UpdateUserData
-from utils import convert_to_date
+
+# from utils import convert_to_date
 from utils.password_hasher import hash_password
 
 # import logging.config

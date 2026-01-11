@@ -31,13 +31,11 @@ target_metadata = Base.metadata
 # ... etc.
 config.set_main_option("sqlalchemy.url", str(settings.db.url))
 
-def ensure_database_exists():
-    engine = create_engine(
-        settings.db.admin_url,
-        isolation_level="AUTOCOMMIT"
-    )
 
-    db_name = settings.db.url.rsplit('/', maxsplit=1)[-1]
+def ensure_database_exists():
+    engine = create_engine(settings.db.admin_url, isolation_level="AUTOCOMMIT")
+
+    db_name = settings.db.url.rsplit("/", maxsplit=1)[-1]
 
     with engine.connect() as conn:
         exists = conn.execute(
@@ -46,9 +44,8 @@ def ensure_database_exists():
         ).scalar()
 
         if not exists:
-            conn.execute(
-                text(f'CREATE DATABASE "{db_name}"')
-            )
+            conn.execute(text(f'CREATE DATABASE "{db_name}"'))
+
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode.

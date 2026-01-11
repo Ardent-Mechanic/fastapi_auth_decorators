@@ -1,6 +1,3 @@
-__all__ = (
-    "db_session",
-)
+__all__ = ("db_session",)
 
 from .db_session import db_session
-

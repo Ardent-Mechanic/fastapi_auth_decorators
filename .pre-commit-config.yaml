@@ -1,0 +1,43 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 24.3.0  # Проверенная версия
+    hooks:
+      - id: black
+        args:
+          # Регулярка для исключения папок
+          - --exclude=(\.git|\.mypy_cache|\.tox|\.venv|__pycache__|\.idea|migrations)
+          - --line-length=99
+
+
+  - repo: https://github.com/PyCQA/isort
+    rev: 5.13.2  # Проверенная версия
+    hooks:
+      - id: isort
+        args:
+          - --profile=black
+          - --skip=.git
+          - --skip=.mypy_cache
+          - --skip=.tox
+          - --skip=.venv
+          - --skip=__pycache__
+          - --skip=.idea
+          - --skip=migrations
+          - --filter-files
+
+  - repo: https://github.com/pycqa/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args:
+          - --max-line-length=99
+          - --max-complexity=12
+          - --ignore=E203,W503
+          - --exclude=.git,.mypy_cache,.tox,.venv,__pycache__,.idea,migrations
+
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.10.0  # Проверенная версия
+    hooks:
+      - id: mypy
+        args:
+          - --ignore-missing-imports
+          - --exclude=.git,.mypy_cache,.tox,.venv,__pycache__,.idea,migrations
