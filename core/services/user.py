@@ -1,18 +1,16 @@
-import logging
+from exceptions.custom_exceptions import NotFoundError, UserAlreadyExistsError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from core.exceptions import UserDBError
 from crud.user import (
     add_user_db,
     delete_user_db,
+    get_user_by_email_db,
     get_user_by_id_db,
     update_user_db,
 )
 from model.user import User
 from schemas.user import AddUserData, UpdateUserData
 from utils.password_hasher import hash_password
-
-logger = logging.getLogger("main")
 
 
 async def get_user_by_id_service(
@@ -21,7 +19,7 @@ async def get_user_by_id_service(
 ) -> User:
     user = await get_user_by_id_db(session, user_id)
     if not user:
-        raise ValueError("User not found")
+        raise NotFoundError()
     return user
 
 
@@ -35,6 +33,9 @@ async def add_user_service(
         is_active=user_new.is_active,
         is_superuser=user_new.is_superuser,
     )
+    user_in_db = await get_user_by_email_db(session, email=user_new.email)
+    if user_in_db:
+        raise UserAlreadyExistsError()
     return await add_user_db(session, user)
 
 
@@ -44,7 +45,7 @@ async def update_user_service(
 ) -> User:
     user = await get_user_by_id_db(session, user_update.user_id)
     if not user:
-        raise ValueError("User not found")
+        raise NotFoundError()
 
     update_data = user_update.model_dump(
         exclude_unset=True,
@@ -66,6 +67,6 @@ async def delete_user_service(
 ) -> User:
     user = await get_user_by_id_db(session, user_id)
     if not user:
-        raise ValueError("User not found")
+        raise NotFoundError()
 
     return await delete_user_db(session, user)
