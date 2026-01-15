@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from pydantic import BaseModel, SecretStr, field_validator
+from pydantic import BaseModel, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # from typing import Optional

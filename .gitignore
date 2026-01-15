@@ -4,5 +4,5 @@
 __pycache__/
 .env
 /logs
-core/services
-.mypy_cache
+.mypy_cach
+.vscode
