@@ -4,17 +4,22 @@ from typing import Any, Optional
 class ApiException(Exception):
     __slots__ = ("status_code", "detail", "headers", "error_code", "data")
     
-    status_code: int = 500
-    detail: str = "Internal server error"
-    headers: Optional[dict[str, Any]] = None
-    error_code: Optional[str] = None
-    data: Optional[dict[str, Any]] = None
+    def __init__(
+        self,
+        *,
+        status_code: int = 500,
+        detail: str = "Internal server error",
+        error_code: Optional[str] = None,
+        headers: Optional[dict[str, Any]] = None,
+        data: Optional[dict[str, Any]] = None,
+    ):
+        self.status_code = status_code
+        self.detail = detail
+        self.error_code = error_code
+        self.headers = headers
+        self.data = data
 
-    def __init__(self, **kwargs: Any):
-        for key, value in kwargs.items():
-            if hasattr(self, key):
-                setattr(self, key, value)
-        super().__init__(self.detail)
+        super().__init__(detail)
 
     def __str__(self) -> str:
         return (
@@ -23,7 +28,7 @@ class ApiException(Exception):
         )
 
     def to_dict(self) -> dict[str, Any]:
-        response = {"detail": self.detail}  # было "respose"
+        response = {"detail": self.detail, "data": {}} 
         if self.error_code:
             response["error_code"] = self.error_code
         if self.data:

@@ -32,19 +32,23 @@ target_metadata = Base.metadata
 config.set_main_option("sqlalchemy.url", str(settings.db.url))
 
 
-def ensure_database_exists():
-    engine = create_engine(settings.db.admin_url, isolation_level="AUTOCOMMIT")
+async def ensure_database_exists_async():
+    from sqlalchemy.ext.asyncio import create_async_engine
+
+    engine = create_async_engine(settings.db.admin_url, isolation_level="AUTOCOMMIT", future=True)
 
     db_name = settings.db.url.rsplit("/", maxsplit=1)[-1]
 
-    with engine.connect() as conn:
-        exists = conn.execute(
+    async with engine.begin() as conn:
+        result = await conn.execute(
             text("SELECT 1 FROM pg_database WHERE datname = :name"),
             {"name": db_name},
-        ).scalar()
-
+        )
+        exists = result.scalar()
         if not exists:
-            conn.execute(text(f'CREATE DATABASE "{db_name}"'))
+            await conn.execute(text(f'CREATE DATABASE "{db_name}"'))
+
+    await engine.dispose()
 
 
 def run_migrations_offline() -> None:
@@ -98,7 +102,7 @@ async def run_async_migrations() -> None:
 
 def run_migrations_online() -> None:
     """Run migrations in 'online' mode."""
-    ensure_database_exists()
+    asyncio.run(ensure_database_exists_async())
     asyncio.run(run_async_migrations())
 
 

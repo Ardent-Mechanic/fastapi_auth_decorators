@@ -1,4 +1,4 @@
-from exceptions.custom_exceptions import NotFoundError, UserAlreadyExistsError
+from core.exceptions.custom_exceptions import NotFoundError, UserAlreadyExistsError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from crud.user import (

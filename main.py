@@ -1,17 +1,16 @@
 from contextlib import asynccontextmanager
 
 import uvicorn
-from exceptions import ApiException
+
 from fastapi import FastAPI
 
 from api import router as api_router
-from api.api_v1.exception_handlers import (
-    api_exception_handler,
-    unhandled_exception_handler,
-)
+
+from api.api_v1.exception_handlers import api_exception_handler, unhandled_exception_handler
 from core.config import settings
 from core.logging import setup_logging
 from db import db_session
+from core.exceptions.base import ApiException
 from model import Base
 
 
@@ -28,6 +27,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     lifespan=lifespan,
+    log_level="info",
 )
 
 app.add_exception_handler(ApiException, api_exception_handler)

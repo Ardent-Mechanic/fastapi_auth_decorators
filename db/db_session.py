@@ -50,6 +50,7 @@ class DataBaseSession:
             except Exception as e:
                 await session.rollback()
                 logger_db.error(f"Error getting session: {e}")
+                raise e
             finally:
                 await session.close()
 

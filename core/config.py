@@ -14,9 +14,16 @@ class RunConfig(BaseModel):
     port: int = 8000
 
 
+class JWTConfig(BaseModel):
+    algorithm: str = "HS256"
+    secret_key: str
+    access_token_expire_minutes: int
+
+
 class ApiV1Prefix(BaseModel):
     prefix: str = "/v1"
     user: str = "/user"
+    auth: str = "/auth"
 
 
 class ApiPrefix(BaseModel):
@@ -57,6 +64,7 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig
+    jwt: JWTConfig
 
 
 settings = Settings()  # type: ignore
