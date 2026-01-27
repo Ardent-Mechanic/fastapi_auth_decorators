@@ -1,13 +1,12 @@
 from fastapi import APIRouter
-
 from core.config import settings
 
-from .user import router as user_router
+from .public import router as public_router
+from .protected import router as protected_router
 
-router = APIRouter(
-    prefix=settings.api.v1.prefix,
-)
-router.include_router(
-    user_router,
-    prefix=settings.api.v1.user,
-)
+router = APIRouter(prefix=settings.api.v1.prefix)
+
+# public endpoints
+router.include_router(public_router)
+# protected endpoints
+router.include_router(protected_router)

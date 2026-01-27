@@ -48,3 +48,5 @@ class GetUserData(BaseModel):
 
 class DeleteUserData(BaseModel):
     user_id: int
+
+

@@ -21,3 +21,8 @@ class DatabaseError(ApiException):
     __slots__ = ()
     def __init__(self, **kwargs):
         super().__init__(status_code=500, detail="Database operation failed", error_code="DATABASE_ERROR", **kwargs)
+
+class UnauthorizedError(ApiException):
+    __slots__ = ()
+    def __init__(self, **kwargs):
+        super().__init__(status_code=401, detail="Unauthorized access", error_code="UNAUTHORIZED", **kwargs)

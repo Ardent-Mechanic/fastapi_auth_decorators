@@ -10,7 +10,7 @@ from crud.user import (
 )
 from model.user import User
 from schemas.user import AddUserData, UpdateUserData
-from utils.password_hasher import hash_password
+from core.security.password_hasher import hash_password
 
 
 async def get_user_by_id_service(
